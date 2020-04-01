@@ -1,0 +1,3 @@
+RestrictedPython==5.0.*
+flask==1.1.*
+git+git://github.com/guangie88/folium.git@v0.10.1+urloverride#egg=folium  # folium==0.10.1 with possible URL overriding modification
