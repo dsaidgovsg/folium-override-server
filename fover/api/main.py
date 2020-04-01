@@ -1,88 +1,48 @@
 import logging
 from os import path
 
-import folium
-from flask import Blueprint, render_template, request, send_file
-from RestrictedPython import compile_restricted, safe_globals
+from flask import (
+    Blueprint,
+    Response,
+    make_response,
+    render_template,
+    request,
+    send_file,
+)
 
 from fover.utils.env import Env
+from fover.utils.parse import convert_folium_html
 
 bp = Blueprint("main", __name__)
 
 
-def parse_script(content: str) -> folium.Map:
-    loc = {}
-    byte_code = compile_restricted(content, "<inline>", "exec")
-    exec(byte_code, safe_globals, loc)
-    loc["generate_map"]()
-
-
 @bp.route("/generate", methods=["POST"])
-def generate():
+def generate() -> Response:
+    folium_host = request.form.get("folium_host")
+    tileserver_gl_host = request.form.get("tileserver_gl_host")
+    tileserver_gl_tile = request.form.get("tileserver_gl_tile")
+
     f = request.files["file"]
+    html_content = f.read()
 
     filename, _ = path.splitext(f.filename)
-    override_filename = f"${filename}_override.py"
-    f.save(override_filename)
+    override_filename = f"${filename}_override.html"
 
-    return send_file(override_filename, as_attachment=True, mimetype="text/plain")
+    mod_html = convert_folium_html(
+        html_content, folium_host, tileserver_gl_host, tileserver_gl_tile,
+    )
 
-    # return content
-    # override_js = (
-    #     {
-    #         "leaflet": path.join(Env.APP_FOLIUM_SERVER_URL, "leaflet@1.5.1/leaflet.js"),
-    #         "jquery": path.join(Env.APP_FOLIUM_SERVER_URL, "jquery-1.12.4.min.js"),
-    #         "bootstrap": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "bootstrap@3.2.0/bootstrap.min.js"
-    #         ),
-    #         "awesome_markers": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL,
-    #             "leaflet.awesome-markers@2.0.2/leaflet.awesome-markers.js",
-    #         ),
-    #     }
-    #     if Env.APP_FOLIUM_SERVER_URL
-    #     else {}
-    # )
-
-    # override_css = (
-    #     {
-    #         "leaflet_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "leaflet@1.5.1/leaflet.css"
-    #         ),
-    #         "bootstrap_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "bootstrap@3.2.0/bootstrap.min.css"
-    #         ),
-    #         "bootstrap_theme_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "bootstrap@3.2.0/bootstrap-theme.min.css"
-    #         ),
-    #         "awesome_markers_font_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "font-awesome@4.6.3/font-awesome.min.css"
-    #         ),
-    #         "awesome_markers_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL,
-    #             "leaflet.awesome-markers@2.0.2/leaflet.awesome-markers.css",
-    #         ),
-    #         "awesome_rotate_css": path.join(
-    #             Env.APP_FOLIUM_SERVER_URL, "leaflet.awesome.rotate.css"
-    #         ),
-    #     }
-    #     if Env.APP_FOLIUM_SERVER_URL
-    #     else {}
-    # )
-
-    # folium_map = folium.Map(
-    #     location=SG_LATLNG,
-    #     zoom_start=FOLIUM_DEFAULT_ZOOM,
-    #     tiles=f"{Env.APP_TILESERVER_URL}/styles/{Env.APP_TILESERVER_STYLE}/{{z}}/{{x}}/{{y}}.png",
-    #     attr=Env.APP_FOLIUM_ATTRIBUTION,
-    # )
-
-    # folium_map.set_override_js(override_js)
-    # folium_map.set_override_css(override_css)
-
-    # return folium_map._repr_html_()
+    rsp = make_response(mod_html)
+    rsp.headers["Content-Type"] = "text/html"
+    rsp.headers["Content-Disposition"] = f"attachment;filename={filename}_override.html"
+    return rsp
 
 
 @bp.route("/")
-def root():
-    return render_template("root.html")
+def root() -> Response:
+    return render_template(
+        "root.html",
+        folium_host=Env.APP_DEFAULT_FOLIUM_SERVER_URL,
+        tileserver_gl_host=Env.APP_DEFAULT_TILESERVER_GL_URL,
+        tileserver_gl_tiles=Env.APP_TILESERVER_GL_TILES,
+    )

@@ -1,4 +1,5 @@
 import os
+from typing import List, Optional
 
 
 class _Env:
@@ -9,14 +10,23 @@ class _Env:
     """
 
     @property
-    def APP_DEFAULT_FOLIUM_SERVER_URL(self) -> str:
+    def APP_DEFAULT_FOLIUM_SERVER_URL(self) -> Optional[str]:
         """Default Folium JS and CSS custom host to use."""
-        return os.getenv("APP_DEFAULT_FOLIUM_SERVER_URL", "")
+        return os.getenv("APP_DEFAULT_FOLIUM_SERVER_URL")
 
     @property
-    def APP_DEFAULT_TILESERVER_URL(self) -> str:
-        """Default tileserver custom host to use."""
-        return os.getenv("APP_DEFAULT_TILESERVER_URL", "")
+    def APP_DEFAULT_TILESERVER_GL_URL(self) -> Optional[str]:
+        """Default tileserver-gl custom host to use."""
+        return os.getenv("APP_DEFAULT_TILESERVER_GL_URL")
+
+    @property
+    def APP_TILESERVER_GL_TILES(self) -> List[str]:
+        """
+        Available tileserver-gl tiles to use. Multiple identifiers are delimited by comma.
+
+        The tile set must be present in the custom tileserver-gl.
+        """
+        return os.getenv("APP_TILESERVER_GL_TILES", "osm_bright,dark_matter").split(",")
 
 
 Env = _Env()

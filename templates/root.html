@@ -5,12 +5,38 @@
   <body>
     <h1>Folium Map Custom URL Override Submission</h1>
     <form action="/generate" method="post" enctype="multipart/form-data">
+      <label for="folium_host">Custom folium host:</label>
+      <input
+        type="text"
+        id="folium_host"
+        name="folium_host"
+        placeholder="e.g. http://localhost:8080"
+        value="{{ folium_host }}"
+      >
+      <br>
+
+      <label for="tileserver_gl_host">Custom tileserver-gl host:</label>
+      <input
+        type="text"
+        id="tileserver_gl_host"
+        name="tileserver_gl_host"
+        placeholder="e.g. http://localhost:9090"
+        value="{{ tileserver_gl_host }}"
+      >
+      <br>
+
+      <label for="tileserver_gl_tile">Tile set to use:</label>
+      <select id="tileserver_gl_tile" name="tileserver_gl_tile">
+        {% for tile in tileserver_gl_tiles -%}
+        <option value="{{ tile }}">{{ tile }}</option>
+        {%- endfor %}
+      </select>
+      <br><br>
+
       <label for="scriptToUpload">Folium map script to upload:</label>
       <br>
       <input type="file" name="file" id="scriptToUpload">
       <input type="submit" value="Submit" name="submit">
-      <br><br><br><br>
-      
     </form>
   </body>
 </html>

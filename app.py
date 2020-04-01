@@ -10,6 +10,9 @@ import os
 from flask import Flask
 
 import fover.api.main as api_main
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # static_url_path – can be used to specify a different path for the static files on the web.
 #                   Defaults to the name of the static_folder folder.

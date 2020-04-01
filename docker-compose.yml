@@ -1,13 +1,13 @@
 version: '2.3'
 services:
   fover:
+    env_file:
+    - .env
     environment:
       FLASK_RUN_HOST: '0.0.0.0'
-      FLASK_RUN_PORT: '5050'
-      APP_DEFAULT_FOLIUM_SERVER_URL: 'http://localhost:8080'
-      APP_DEFAULT_TILESERVER_URL: 'http://localhost:9090'
+      FLASK_RUN_PORT: '5000'
     build:
       context: .
       target: release
     ports:
-      - 5050:5050
+      - 5000:5000
