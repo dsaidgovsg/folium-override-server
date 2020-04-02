@@ -23,5 +23,6 @@ ENTRYPOINT []
 FROM base AS release
 COPY app.py ./
 COPY fover ./fover
+COPY static ./static
 COPY templates ./templates
 CMD ["flask", "run"]

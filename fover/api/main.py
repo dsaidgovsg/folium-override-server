@@ -1,5 +1,7 @@
+import json
 import logging
-from os import path
+import os
+from typing import Dict
 
 from flask import (
     Blueprint,
@@ -13,7 +15,17 @@ from flask import (
 from fover.utils.env import Env
 from fover.utils.parse import convert_folium_html
 
-bp = Blueprint("main", __name__)
+bp = Blueprint("main", __name__, static_folder="../../static")
+
+
+def read_json_conf(conf_path: str, folium_server_url: str) -> Dict[str, str]:
+    with open(os.path.join(conf_path)) as json_file:
+        folium_conf = json.load(json_file)
+        for res_name in folium_conf:
+            folium_conf[res_name] = os.path.join(
+                folium_server_url, folium_conf[res_name]
+            )
+    return folium_conf
 
 
 @bp.route("/generate", methods=["POST"])
@@ -25,11 +37,25 @@ def generate() -> Response:
     f = request.files["file"]
     html_content = f.read()
 
-    filename, _ = path.splitext(f.filename)
+    filename, _ = os.path.splitext(f.filename)
     override_filename = f"${filename}_override.html"
 
+    # Read and modify the JS and CSS configurations
+    folium_js_conf = read_json_conf(
+        os.path.join(bp.static_folder, "external/folium-js.json"),
+        Env.APP_DEFAULT_FOLIUM_SERVER_URL,
+    )
+    folium_css_conf = read_json_conf(
+        os.path.join(bp.static_folder, "external/folium-css.json"),
+        Env.APP_DEFAULT_FOLIUM_SERVER_URL,
+    )
+
     mod_html = convert_folium_html(
-        html_content, folium_host, tileserver_gl_host, tileserver_gl_tile,
+        html_content,
+        folium_js_conf,
+        folium_css_conf,
+        tileserver_gl_host,
+        tileserver_gl_tile,
     )
 
     rsp = make_response(mod_html)
