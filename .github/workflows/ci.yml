@@ -30,6 +30,11 @@ jobs:
         else IMAGE_TAG="test-${REF_TAG}"; fi
 
         echo "::set-env name=IMAGE_TAG::${IMAGE_TAG}"
+    - name: Build Docker tester and run linting tests
+      run: |-
+        docker build --target tester -t fover-tester .
+        docker run --rm -t -v "$(pwd):/app" fover-tester isort --diff --check-only app.py fover/**/*.py
+        docker run --rm -t -v "$(pwd):/app" fover-tester black --check app.py fover/
     - name: Build and push Docker release image
       uses: docker/build-push-action@v1
       with:
