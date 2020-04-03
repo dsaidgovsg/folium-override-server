@@ -1,6 +1,10 @@
 # Folium Override Server
 
+![CI Status](https://img.shields.io/github/workflow/status/dsaidgovsg/folium-override-server/CI/master?label=CI&logo=github&style=for-the-badge)
+
 Webserver to re-generate uploaded folium map to use custom URLs.
+
+The service name for this repository is generally abbreviated as `fover`.
 
 ## What does this do
 
