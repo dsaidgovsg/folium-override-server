@@ -51,10 +51,13 @@ generated HTML file will not make sense with the default env var values.
 Finally simply do
 
 ```bash
-flask run
+gunicorn app:app
 ```
 
-In your web browser, go to <http://localhost:5000>.
+In your web browser, go to <http://localhost:8000>.
+
+If you want to customize the port, binding address or the number of workers to run with, look at the
+official documentation for more details: <https://docs.gunicorn.org/en/stable/run.html>.
 
 ### `docker-compose` set-up
 
@@ -66,4 +69,4 @@ Simply run
 docker-compose up --build
 ```
 
-In your web browser, go to <http://localhost:5000>.
+In your web browser, go to <http://localhost:8000>.

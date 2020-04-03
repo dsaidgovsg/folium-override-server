@@ -21,8 +21,10 @@ RUN python3 -m pip install --no-cache -r requirements.dev.txt
 ENTRYPOINT []
 
 FROM base AS release
+
 COPY app.py ./
 COPY fover ./fover
 COPY static ./static
 COPY templates ./templates
-CMD ["flask", "run"]
+
+CMD ["gunicorn", "app:app"]
