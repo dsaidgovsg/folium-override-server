@@ -1,42 +1,53 @@
 <html>
   <head>
-  <title>Folium Map Custom URL Override Submission</title>
+    <title>Folium Map Custom URL Override Submission</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-4.4.1.min.css') }}">
   </head>
   <body>
-    <h1>Folium Map Custom URL Override Submission</h1>
-    <form action="/generate" method="post" enctype="multipart/form-data">
-      <label for="folium_host">Custom folium host:</label>
-      <input
-        type="text"
-        id="folium_host"
-        name="folium_host"
-        placeholder="e.g. http://localhost:8080"
-        value="{{ folium_host }}"
-      >
-      <br>
-
-      <label for="tileserver_gl_host">Custom tileserver-gl host:</label>
-      <input
-        type="text"
-        id="tileserver_gl_host"
-        name="tileserver_gl_host"
-        placeholder="e.g. http://localhost:9090"
-        value="{{ tileserver_gl_host }}"
-      >
-      <br>
-
-      <label for="tileserver_gl_tile">Tile set to use:</label>
-      <select id="tileserver_gl_tile" name="tileserver_gl_tile">
-        {% for tile in tileserver_gl_tiles -%}
-        <option value="{{ tile }}">{{ tile }}</option>
-        {%- endfor %}
-      </select>
-      <br><br>
-
-      <label for="scriptToUpload">Folium map script to upload:</label>
-      <br>
-      <input type="file" name="file" id="scriptToUpload">
-      <input type="submit" value="Submit" name="submit">
-    </form>
+    <div class="container">
+      <h2 class="mt-4">Folium Map Custom URL Override Submission</h2>
+      <div class="card">
+        <div class="card-body">
+          <form action="/generate" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" for="folium_host">Custom folium host:</label>
+              <input
+                class="form-control form-control-md col-sm-9"
+                type="text"
+                id="folium_host"
+                name="folium_host"
+                placeholder="e.g. http://localhost:8080"
+                value="{{ folium_host }}"
+              >
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" for="tileserver_gl_host">Custom tileserver-gl host:</label>
+              <input
+                class="form-control form-control-md col-sm-9"
+                type="text"
+                id="tileserver_gl_host"
+                name="tileserver_gl_host"
+                placeholder="e.g. http://localhost:9090"
+                value="{{ tileserver_gl_host }}"
+              >
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" for="tileserver_gl_tile">Tile set to use:</label>
+              <select class="form-control form-control-md col-sm-9" id="tileserver_gl_tile" name="tileserver_gl_tile">
+                {% for tile in tileserver_gl_tiles -%}
+                <option value="{{ tile }}">{{ tile }}</option>
+                {%- endfor %}
+              </select>
+            </div>
+            <hr>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label" for="scriptToUpload">Folium map script to upload:</label>
+              <input class="form-control-file form-control-md col-sm-9" type="file" name="file" id="scriptToUpload">
+            </div>
+            <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
