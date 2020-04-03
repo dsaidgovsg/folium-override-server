@@ -1,0 +1,12 @@
+version: '2.3'
+services:
+  fover:
+    env_file:
+    - .env
+    environment:
+      GUNICORN_CMD_ARGS: "--bind 0.0.0.0:8000 --workers=4"
+    build:
+      context: .
+      target: release
+    ports:
+      - 8000:8000
