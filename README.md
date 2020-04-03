@@ -4,10 +4,10 @@ Webserver to re-generate uploaded folium map to use custom URLs.
 
 ## What does this do
 
-This webservice allows any generate `folium` map done via `._repr_html_()` to have all its external
-resource URLs replaced with custom URLs, so that the HTML file is transformed to point to custom
-hosts to load all its external resources. This is useful for hosting and showing maps within
-non-Internet zone for example.
+This webservice allows any generate `folium` map done via `.save()` and `._repr_html_()` to have all
+its external resource URLs replaced with custom URLs, so that the HTML file is transformed to point
+to custom hosts to load all its external resources. This is useful for hosting and showing maps
+within non-Internet zone for example.
 
 These URLs to be replaced are split into two sets:
 

@@ -7,10 +7,10 @@ And then head to http://127.0.0.1:5000/ in your browser to see the map displayed
 
 import os
 
+from dotenv import load_dotenv
 from flask import Flask
 
 import fover.api.main as api_main
-from dotenv import load_dotenv
 
 load_dotenv()
 
