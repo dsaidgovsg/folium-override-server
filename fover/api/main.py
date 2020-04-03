@@ -42,12 +42,10 @@ def generate() -> Response:
 
     # Read and modify the JS and CSS configurations
     folium_js_conf = read_json_conf(
-        os.path.join(bp.static_folder, "external/folium-js.json"),
-        Env.APP_DEFAULT_FOLIUM_SERVER_URL,
+        os.path.join(bp.static_folder, "external/folium-js.json"), folium_host,
     )
     folium_css_conf = read_json_conf(
-        os.path.join(bp.static_folder, "external/folium-css.json"),
-        Env.APP_DEFAULT_FOLIUM_SERVER_URL,
+        os.path.join(bp.static_folder, "external/folium-css.json"), folium_host,
     )
 
     mod_html = convert_folium_html(
