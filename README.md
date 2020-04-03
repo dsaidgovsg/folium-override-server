@@ -70,3 +70,21 @@ docker-compose up --build
 ```
 
 In your web browser, go to <http://localhost:8000>.
+
+## Versioning
+
+The tag release system here follows this format `vX.Y.Z_folium-v0.10.1`. The`vX.Y.Z` part is the
+semver for this repository, while the `folium-v0.10.1` part is to match the resources that was
+extracted from `folium` `v0.10.1`.
+
+## Updating external JSON
+
+The external JSON files required for URL replacement is extracted from
+<https://github.com/dsaidgovsg/folium-resource-server>.
+
+The `folium` version tagged in this repo will fetch the corresponding matching `folium` version in
+the above repository.
+
+For convenience, a script to download and update the external JSON files is created at
+`update-external.sh`. If the `folium` version changes for this repository, the script should also be
+updated accordingly.
