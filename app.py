@@ -5,13 +5,13 @@ $ python app.py
 And then head to http://127.0.0.1:5000/ in your browser to see the map displayed
 """
 
+import json
 import os
+from typing import Dict
 
 from dotenv import load_dotenv
 from flask import Flask
 from flask_compress import Compress
-import json
-from typing import Dict
 
 import fover.api.main as api_main
 
