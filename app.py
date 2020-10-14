@@ -21,6 +21,7 @@ load_dotenv()
 #                 Defaults to the 'static' folder in the root path of the application.
 app = Flask(__name__)
 app.config["COMPRESS_LEVEL"] = 9
+app.config["COMPRESS_ALGORITHM"] = ["gzip"]
 
 Compress(app)
 
