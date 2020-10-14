@@ -9,6 +9,7 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_compress import Compress
 
 import fover.api.main as api_main
 
@@ -19,6 +20,9 @@ load_dotenv()
 # static_folder – the folder with static files that should be served at static_url_path.
 #                 Defaults to the 'static' folder in the root path of the application.
 app = Flask(__name__)
+app.config["COMPRESS_LEVEL"] = 9
+
+Compress(app)
 
 app.register_blueprint(api_main.bp)
 
