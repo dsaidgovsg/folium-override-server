@@ -75,6 +75,19 @@ docker-compose up --build
 
 In your web browser, go to <http://localhost:8000>.
 
+## App config via environment variables
+
+The webserver set-up dynamically picks up all `FLASK_APP_` prefixed env vars to be assigned into the
+`app.config`. For e.g., if you set the env var `FLASK_APP_COMPRESS_LEVEL=9`, the webservice would do
+`app.config['COMPRESS_LEVEL'] = 9`.
+
+The value to assign can be a JSON string if you need to assign a list, e.g.:
+`FLASK_APP_COMPRESS_ALGORITHM='["gzip"]'`.
+
+Currently this webservice has the following packages that require app config set-up:
+
+- [Flask-Compress](https://pypi.org/project/Flask-Compress/)
+
 ## Versioning
 
 The tag release system here follows this format `vX.Y.Z_folium-v0.10.1`. The`vX.Y.Z` part is the
