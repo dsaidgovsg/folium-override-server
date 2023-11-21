@@ -29,19 +29,27 @@ def setup_app_conf(app: Flask, prefix: str) -> None:
             app.config[key] = v
 
 
-load_dotenv()
+def create_app():
+    load_dotenv()
 
-# static_url_path – can be used to specify a different path for the static files on the web.
-#                   Defaults to the name of the static_folder folder.
-# static_folder – the folder with static files that should be served at static_url_path.
-#                 Defaults to the 'static' folder in the root path of the application.
-FLASK_APP_ENV_PREFIX = "FLASK_APP_"
-app = Flask(__name__)
+    # static_url_path – can be used to specify a different path for the static files on the web.
+    #                   Defaults to the name of the static_folder folder.
+    # static_folder – the folder with static files that should be served at static_url_path.
+    #                 Defaults to the 'static' folder in the root path of the application.
+    FLASK_APP_ENV_PREFIX = "FLASK_APP_"
+    app = Flask(__name__)
 
-setup_app_conf(app, FLASK_APP_ENV_PREFIX)
-Compress(app)
+    @app.after_request
+    def apply_caching(response):
+        response.headers["X-Frame-Options"] = "DENY"
+        return response
 
-app.register_blueprint(api_main.bp)
+    setup_app_conf(app, FLASK_APP_ENV_PREFIX)
+    Compress(app)
+
+    app.register_blueprint(api_main.bp)
+    return app
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    create_app().run(debug=True)
