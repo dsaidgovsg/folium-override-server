@@ -30,7 +30,6 @@ jobs:
         if [[ "${EVENT}" == "push" || "${EVENT}" == "release" ]]; then IMAGE_TAG="${REF_TAG}"
         else IMAGE_TAG="test-${REF_TAG}"; fi
 
-        echo "::set-env name=IMAGE_TAG::${IMAGE_TAG}"
     - name: Build Docker tester and run linting tests
       run: |-
         docker build --target tester -t fover-tester .
